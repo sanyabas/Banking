@@ -1,5 +1,6 @@
 from flask_restful import Api, Resource, reqparse
-from db.db import payments
+from db import db
+from db.models import CardPaymentModel
 
 
 class CardPayment(Resource):
@@ -23,9 +24,9 @@ class CardPayment(Resource):
             'comment': args['comment'],
             'email': args['email']
         }
-        payments.append(payment)
-        print(payments)
-        return {'ok': 'true', 'values': payments}, 200
+        print(payment)
+        db.add_card_payment(args)
+        return {'ok': 'true'}, 200
 
     def get(self):
-        return {'ok': 'true', 'values': payments}
+        return {'ok': 'true', 'values': 'values will be here'}
