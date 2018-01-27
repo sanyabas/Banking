@@ -1,5 +1,6 @@
 from flask_restful import Api, Resource, reqparse
 from db import db
+from auth.auth import auth_is_valid
 from app import app
 from db.models import CardPaymentModel
 from app import auth
@@ -17,6 +18,10 @@ class CardPayment(Resource):
         self.reqparse.add_argument('sum', type=int, required=True, location='json')
         self.reqparse.add_argument('comment', type=str, required=False, location='json')
         self.reqparse.add_argument('email', type=str, required=True, location='json')
+        self.error = {
+            'ok': 'false',
+            'message': 'Bad credentials'
+        }
         super(CardPayment, self).__init__()
 
     def post(self):
@@ -39,6 +44,8 @@ class CardPayment(Resource):
         return {'ok': 'true'}, 200
 
     def get(self):
+        if not auth_is_valid(request):
+            return self.error, 403
         payments = db.get_payments()
         result = []
         for payment in payments:
@@ -47,6 +54,8 @@ class CardPayment(Resource):
         return {'ok': 'true', 'values': result}
 
     def put(self, id):
+        if not auth_is_valid(request):
+            return self.error, 403
         try:
             db.toggle_safety(id)
         except Exception:
