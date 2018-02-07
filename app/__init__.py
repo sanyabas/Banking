@@ -7,7 +7,7 @@ from .config import Config
 
 app = Flask(__name__)
 app.config.from_object(Config)
-CORS(app)
+CORS(app, origins=r'http://localhost.*')
 api = Api(app)
 db = SQLAlchemy(app)
 auth=HTTPBasicAuth()

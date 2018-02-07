@@ -14,4 +14,4 @@ def hash_password(username, password):
     salt = db.get_user_salt(username)
     admin_hash = sha256(salt.encode())
     admin_hash = admin_hash.update(password.encode())
-    return admin_hash.hexdigest
+    return admin_hash.hexdigest()
