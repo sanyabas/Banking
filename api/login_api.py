@@ -9,8 +9,8 @@ class LoginApi(Resource):
     def post(self):
         data = request.get_json()
         try:
-            user = Admin.query.filter_by(username=data['username']).first()
-            if user and auth.get_password(data['username']) == auth.hash_password(data['username'], data['password']):
+            user = Admin.query.filter_by(username=data['login']).first()
+            if user and auth.get_password(data['login']) == auth.hash_password(data['login'], data['password']):
                 token = auth.encode_auth_token(user.id)
                 if token:
                     resp_obj = {

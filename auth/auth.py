@@ -6,6 +6,19 @@ from app import app
 from db import db
 
 
+def auth_is_valid(request):
+    auth_header = request.headers.get('Authorization')
+    if not auth_header:
+        return False
+    token = auth_header.split()[1]
+    if not token:
+        return False
+    resp = decode_auth_token(token)
+    if isinstance(resp, str):
+        return False
+    return True
+
+
 def encode_auth_token(user_id):
     try:
         payload = {

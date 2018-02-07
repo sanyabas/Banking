@@ -1,10 +1,15 @@
+import flask
 from flask_restful import Resource, reqparse
-from flask.views import MethodView
+from auth.auth import auth_is_valid
 from db import db
 
 
 class PaymentRequest(Resource):
     def __init__(self):
+        self.error = {
+            'ok': 'false',
+            'message': 'Bad credentials'
+        }
         self.reqparser = reqparse.RequestParser()
         self.reqparser.add_argument('to', required=True, type=str, location='json')
         self.reqparser.add_argument('bik', type=str, required=True, location='json')
@@ -21,6 +26,8 @@ class PaymentRequest(Resource):
         return {'ok': 'true'}
 
     def get(self):
+        if not auth_is_valid(flask.request):
+            return self.error, 403
         fields=['id','to','bik','account','goal','sum','phone','email']
         requests = db.get_requests()
         result = []
