@@ -1,15 +1,11 @@
-from flask_restful import Api, Resource, reqparse
-from db import db
+from flask import request
+from flask_restful import Resource, reqparse
+
 from auth.auth import auth_is_valid
-from app import app
-from db.models import CardPaymentModel
-from app import auth
-from flask import redirect, url_for, send_file, request
+from db import db
 
 
 class CardPayment(Resource):
-    # decorators = {'get': [auth.login_required]}
-
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('cardNumber', type=str, required=True, location='json')
@@ -25,21 +21,7 @@ class CardPayment(Resource):
         super(CardPayment, self).__init__()
 
     def post(self):
-        # print(request.data)
         args = self.reqparse.parse_args()
-        payment = {
-            'cardNumber': args['cardNumber'],
-            'expiration': args['expiration'],
-            'cvc': args['cvc'],
-            'sum': args['sum'],
-            'comment': args['comment'],
-            'email': args['email']
-        }
-        # with open('doc.json', 'w',encoding='utf-8') as file:
-        #     file.write(str(payment))
-        # return send_file('../db/app.db')
-        # return redirect(url_for('static', 'doc.json'))
-        # print(payment)
         db.add_card_payment(args)
         return {'ok': 'true'}, 200
 

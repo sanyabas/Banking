@@ -1,4 +1,3 @@
-from app import db
 from .models import *
 
 
@@ -20,21 +19,21 @@ def get_payments():
     return CardPaymentModel.query.all()
 
 
-def toggle_safety(id):
-    item = CardPaymentModel.query.filter_by(id=id).first()
+def toggle_safety(payment_id):
+    item = CardPaymentModel.query.filter_by(id=payment_id).first()
     item.notSafe = not item.notSafe
     db.session.commit()
 
 
 def add_payment_request(args):
-    request=PaymentRequestModel(id=None,
-                                to=args['to'],
-                                bik=args['bik'],
-                                account=args['account'],
-                                goal=args['purpose'],
-                                sum=args['sum'],
-                                phone=args['phone'],
-                                email=args['email'])
+    request = PaymentRequestModel(id=None,
+                                  to=args['to'],
+                                  bik=args['bik'],
+                                  account=args['account'],
+                                  goal=args['purpose'],
+                                  sum=args['sum'],
+                                  phone=args['phone'],
+                                  email=args['email'])
     db.session.add(request)
     db.session.commit()
     print(request)

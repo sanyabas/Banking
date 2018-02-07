@@ -1,7 +1,6 @@
 import datetime
-from hashlib import sha256
-
 import jwt
+from hashlib import sha256
 from app import app
 from db import db
 

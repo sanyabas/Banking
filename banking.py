@@ -1,7 +1,7 @@
 from api.card_payment import CardPayment
-from api.payment_request import PaymentRequest
 from api.login_api import LoginApi
-from app import app, api, db
+from api.payment_request import PaymentRequest
+from app import app, api
 from db.models import *
 
 
@@ -17,4 +17,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-# фиксация сессии

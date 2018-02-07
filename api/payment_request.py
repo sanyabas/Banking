@@ -28,15 +28,14 @@ class PaymentRequest(Resource):
     def get(self):
         if not auth_is_valid(flask.request):
             return self.error, 403
-        fields=['id','to','bik','account','goal','sum','phone','email']
+        fields = ['id', 'to', 'bik', 'account', 'goal', 'sum', 'phone', 'email']
         requests = db.get_requests()
         result = []
         for request in requests:
-            res_dict=dict()
+            res_dict = dict()
             for field in fields:
                 print(request.__dict__)
-                res_dict[field]=request.__dict__[field]
-            # request.__dict__.pop('_sa_instance_state')
+                res_dict[field] = request.__dict__[field]
             result.append(res_dict)
         print(result)
         return {'ok': 'true', 'values': result}
